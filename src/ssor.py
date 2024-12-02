@@ -1,8 +1,5 @@
 import numpy as np
-import sparse
-import matplotlib.pyplot as plt
 from scipy.linalg import norm as norm
-import scipy.sparse as sp
 from scipy.sparse import diags
 
 """The program is to split the matrix into D-diagonal; L: strictly lower matrix; U strictly upper matrix
