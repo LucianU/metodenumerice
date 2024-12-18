@@ -2,6 +2,9 @@ import numpy as np
 from scipy.linalg import norm as norm
 from scipy.sparse import diags
 
+
+
+
 """The program is to split the matrix into D-diagonal; L: strictly lower matrix; U strictly upper matrix
     satisfying: A = D - L - U  """
 
