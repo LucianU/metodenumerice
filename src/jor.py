@@ -46,10 +46,10 @@ def jor_with_precompute(A, b, x0, omega=1.0, tol=1e-6, max_iter=100, opt=0):
     for k in range(max_iter):
         x_new = (1 - omega) * x + omega * (-D_inv @ (L + U) @ x + c)
 
-        if opt == 0:  # Increment-based error
-            error = np.linalg.norm(x_new - x, ord=np.inf)
-        elif opt == 1:  # Residual-based error
-            error = np.linalg.norm(b - (A @ x_new), ord=np.inf)
+        if opt == 0:
+            error = increment(x_new, x)
+        elif opt == 1:
+            error = residual(A, x_new, b)
         else:
             raise ValueError(
                 "Invalid OPT value. Use 0 (increment) or 1 (residual).")
@@ -59,3 +59,5 @@ def jor_with_precompute(A, b, x0, omega=1.0, tol=1e-6, max_iter=100, opt=0):
         else:
             print("Step {} Error {:10.6g}".format(k + 1, error))
         x = x_new
+
+    return x, max_iter
