@@ -1,6 +1,6 @@
 import numpy as np
 
-from .error import step, residual
+from .error import increment, residual
 from .utils import check_args
 
 
@@ -24,7 +24,7 @@ def gsb(A, b, x0, tol=1e-6, max_iter=1000, opt=0):
             x_new[i] = (b[i] - upper_sum - lower_sum) / A[i, i]
 
         if opt == 0:
-            error = step(x_new, x)
+            error = increment(x_new, x)
         else:
             error = residual(A, x_new, b)
 

@@ -1,6 +1,6 @@
 import numpy as np
 
-from .error import step, residual
+from .error import increment, residual
 
 
 def jor(A, b, x0, omega=1.0, tol=1e-6, max_iter=100, opt=0):
@@ -18,7 +18,7 @@ def jor(A, b, x0, omega=1.0, tol=1e-6, max_iter=100, opt=0):
         #x_new = (1 - omega) * x + omega * (b - R @ x) / D
 
         if opt == 0:
-            error = step(x_new, x)
+            error = increment(x_new, x)
         elif opt == 1:
             error = residual(A, x_new, b)
         else:

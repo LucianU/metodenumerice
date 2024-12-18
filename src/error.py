@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def step(x_new, x_old, norm=2):
+def increment(x_new, x_old, norm=2):
     """
     Compute the error as the difference between current and previous approximations.
 
