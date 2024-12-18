@@ -1,7 +1,8 @@
 import numpy as np
 from numpy.linalg import norm
 
-from .utils import dul_descomp, check_args, print_error
+from .error import print_error
+from .utils import dul_descomp, check_args
 
 
 def jacobi_iter(A, b, x0, TOL, max_it):
