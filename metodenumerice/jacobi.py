@@ -1,7 +1,7 @@
 import numpy as np
 from numpy.linalg import norm
 
-from .error import print_error
+from .error import increment, residual, print_error
 from .utils import dul_descomp, check_args
 
 
@@ -42,10 +42,10 @@ def jacobi(A, b, x0, tol=1e-6, max_iter=100, opt=0):
     for k in range(max_iter):
         x_new = (b - R @ x) @ D_inv
 
-        if opt == 0:  # Increment-based error
-            error = np.linalg.norm(x_new - x, ord=np.inf)
-        elif opt == 1:  # Residual-based error
-            error = np.linalg.norm(b - A @ x_new, ord=np.inf)
+        if opt == 0:
+            error = increment(x_new, x)
+        elif opt == 1:
+            error = residual(A, x_new, b)
         else:
             raise ValueError(
                 "Invalid OPT value. Use 0 (increment) or 1 (residual).")
