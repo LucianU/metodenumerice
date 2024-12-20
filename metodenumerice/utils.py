@@ -8,10 +8,36 @@ def dul_descomp(A):
     return D, U, L
 
 
-def check_args(method):
-    def wrapper(A, b, x0, tol, max_iter=100, opt=0):
-        if opt not in [0, 1]:
-            raise ValueError(f"Invalid `opt` value {opt}. Use 0 (increment) or 1 (residual)")
-        return method(A, b, x0, tol, max_iter, opt)
-    return wrapper
+def rho(A):
+    D = np.diag(np.diag(A))
+    L_plus_U = A - D
+    G = np.linalg.inv(D) @ L_plus_U
+    return spectral_radius(G)
+
+
+def spectral_radius(A):
+    eigenvalues = np.linalg.eigvals(A)
+    return max(abs(eigenvalues))
+
+
+def is_diag_dom(A):
+    n = A.shape[0]
+    for i in range(n):
+        diag = abs(A[i, i])
+        off_diag = sum(abs(A[i, j]) for j in range(n) if j != i)
+        if diag <= off_diag:
+            return False
+    return True
+
+
+def is_symm(A):
+    return np.allclose(A, A.T, atol=1e-8)
+
+
+def is_pd(A):
+    try:
+        np.linalg.cholesky(A)
+        return True
+    except np.linalg.LinAlgError:
+        return False
 

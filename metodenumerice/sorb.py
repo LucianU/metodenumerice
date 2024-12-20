@@ -1,10 +1,8 @@
 import numpy as np
 
 from .error import increment, residual
-from .utils import check_args
 
 
-@check_args
 def sorb(A, b, x0, tol=1e-6, max_iter=1000, opt=0):
     n = len(b)
     x = x0.copy()

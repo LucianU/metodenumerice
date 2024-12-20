@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+from .error import increment, residual
+
 
 def jor_corrected(A, b, x0, omega, tol=1e-8, max_iter=1000):
     n = len(b)
@@ -10,9 +12,10 @@ def jor_corrected(A, b, x0, omega, tol=1e-8, max_iter=1000):
     for k in range(max_iter):
         x_new = x.copy()
         for i in range(n):
-            sigma = np.dot(A[i, :], x) - A[i, i] * x[i]
-            x_new[i] = (1 - omega) * x[i] + omega * (b[i] - sigma) / A[i, i]
-        error = np.linalg.norm(x_new - x, ord=np.inf)
+            sigma = A[i, :] @ x - A[i, i] * x[i]
+            x_new[i] = omega * (b[i] - sigma) / A[i, i] + (1 - omega) * x[i]
+
+        error = increment(x_new, x, norm=np.inf)
         residuals.append(error)
         if error < tol:
             print(f"Converged in {k + 1} iterations.")
@@ -31,7 +34,7 @@ def jor_numpy_wikipedia(A, b, x0, omega, tol=1e-8, max_iter=1000):
 
     for k in range(max_iter):
         x_new = omega * D_inv @ (b - L_U @ x) + (1 - omega) * x
-        error = np.linalg.norm(x_new - x, ord=np.inf)
+        error = increment(x_new, x)
         residuals.append(error)
 
         if error < tol:

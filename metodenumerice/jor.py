@@ -3,19 +3,13 @@ import numpy as np
 from .error import increment, residual
 
 
-def jor(A, b, x0, omega=1.0, tol=1e-6, max_iter=100, opt=0):
-    """
-    Jacobi Overrelaxation (JOR) with selectable error metric (OPT)
-    """
+def jor(A, b, x0, omega, tol=1e-8, max_iter=1000, opt=0):
+    D_inv = np.diag(1 / np.diag(A))  # D^(-1)
+    L_U = A - np.diag(np.diag(A))   # L + U
     x = x0.copy()
-    #D = np.diag(A)
-    D_inv = np.diag(1 / np.diag(A))
-    #R = A - np.diag(D)
 
     for k in range(max_iter):
-
-        x_new = x + omega * (D_inv @ (b - A @ x) - x)
-        #x_new = (1 - omega) * x + omega * (b - R @ x) / D
+        x_new = omega * D_inv @ (b - L_U @ x) + (1 - omega) * x
 
         if opt == 0:
             error = increment(x_new, x)
@@ -26,38 +20,11 @@ def jor(A, b, x0, omega=1.0, tol=1e-6, max_iter=100, opt=0):
                 "Invalid OPT value. Use 0 (increment) or 1 (residual).")
 
         if error < tol:
-            return x_new, k + 1
-        else:
-            print("Step {} Error {:10.6g}".format(k + 1, error))
-        x = x_new
+            print(f"JOR: Converged in {k+1} iterations.")
+            return x, k+1
 
-    return x, max_iter
+        x = x_new.copy()
+    else:
+        print("JOR: Didn't converge.")
+    return x
 
-
-def jor_with_precompute(A, b, x0, omega=1.0, tol=1e-6, max_iter=100, opt=0):
-    x = x0.copy()
-    D = np.diag(np.diag(A))
-    L = np.tril(A, -1)
-    U = np.triu(A, 1)
-
-    D_inv = np.diag(1 / np.diag(D))
-    c = D_inv @ b
-
-    for k in range(max_iter):
-        x_new = (1 - omega) * x + omega * (-D_inv @ (L + U) @ x + c)
-
-        if opt == 0:
-            error = increment(x_new, x)
-        elif opt == 1:
-            error = residual(A, x_new, b)
-        else:
-            raise ValueError(
-                "Invalid OPT value. Use 0 (increment) or 1 (residual).")
-
-        if error < tol:
-            return x_new, k + 1
-        else:
-            print("Step {} Error {:10.6g}".format(k + 1, error))
-        x = x_new
-
-    return x, max_iter

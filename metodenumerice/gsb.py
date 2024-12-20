@@ -1,10 +1,8 @@
 import numpy as np
 
 from .error import increment, residual
-from .utils import check_args
 
 
-@check_args
 def gsb(A, b, x0, tol=1e-6, max_iter=1000, opt=0):
     n = len(b)
     x = x0.copy()
@@ -15,28 +13,31 @@ def gsb(A, b, x0, tol=1e-6, max_iter=1000, opt=0):
         # Process rows from bottom to top
         for i in range(n-1, -1, -1):  # Reverse order
             # Compute the sum for elements AFTER the diagonal (updated already in this iteration)
-            upper_sum = np.dot(A[i, i+1:], x_new[i+1:])
+            U_sum = A[i, i+1:] @ x_new[i+1:]
 
             # Compute the sum for elements BEFORE the diagonal (old values)
-            lower_sum = np.dot(A[i, :i], x[:i])
+            L_sum = A[i, :i] @ x[:i]
 
             # Update x_new[i]
-            x_new[i] = (b[i] - upper_sum - lower_sum) / A[i, i]
+            x_new[i] = (b[i] - U_sum - L_sum) / A[i, i]
 
         if opt == 0:
             error = increment(x_new, x)
-        else:
+        elif opt == 1:
             error = residual(A, x_new, b)
+        else:
+            raise ValueError(
+                "Invalid OPT value. Use 0 (increment) or 1 (residual).")
 
         # Check for convergence
         if error < tol:
-            print(f"Converged in {iteration+1} iterations.")
+            print(f"GSb: Converged in {iteration+1} iterations.")
             return x_new
 
         # Update x for the next iteration
         x = x_new
 
-    print("Max iterations reached without convergence.")
+    print("GSb: Max iterations reached without convergence.")
     return x
 
 
