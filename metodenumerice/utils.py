@@ -8,13 +8,6 @@ def dul_descomp(A):
     return D, U, L
 
 
-def rho(A):
-    D = np.diag(np.diag(A))
-    L_plus_U = A - D
-    G = np.linalg.inv(D) @ L_plus_U
-    return spectral_radius(G)
-
-
 def spectral_radius(A):
     eigenvalues = np.linalg.eigvals(A)
     return max(abs(eigenvalues))
