@@ -26,3 +26,17 @@ b4 = np.array([2, 1, 2])
 
 # e)
 A5 = np.zeros([80, 80])
+
+for i in range(80):
+    A5[i, i] = 2*i
+    if i >= 2:
+        A5[i, i-2] = i/2
+    if i >= 4:
+        A5[i, i-4] = i/4
+
+for i in range(78):
+    A5[i, i+2] = i/2
+    if i <= 75:
+        A5[i, i+4] = i/4
+
+b5 = np.full((1, 80), np.pi)
