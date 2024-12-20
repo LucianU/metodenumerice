@@ -1,8 +1,7 @@
 import numpy as np
-from numpy.linalg import inv
 
 from .error import increment, residual
-from .utils import is_symm, spectral_radius
+from .utils import is_symm
 
 
 def sgs(A, b, x0, tol=1e-8, max_iter=1000, op=0):
@@ -12,16 +11,9 @@ def sgs(A, b, x0, tol=1e-8, max_iter=1000, op=0):
 
     n = len(b)
     x = x0.copy()
-    D = np.diag(np.diag(A))
     D_inv = np.diag(1 / np.diag(A))
     L = np.tril(A, -1)
     U = np.triu(A, 1)
-
-    T_sgs = inv(D + L) @ U @ inv(D + U)
-    rho = spectral_radius(T_sgs)
-    if rho >= 1:
-        print("Spectral radius is >= 1. Method will not converge")
-        return (None, 0)
 
     for k in range(max_iter):
         x_old = x.copy()
@@ -51,5 +43,5 @@ def sgs(A, b, x0, tol=1e-8, max_iter=1000, op=0):
 
     else:
         print("SGS: Did not converge.")
-    return x
+    return x, max_iter
 
