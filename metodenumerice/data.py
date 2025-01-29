@@ -40,3 +40,9 @@ for i in range(78):
         A5[i, i+4] = i/4
 
 b5 = np.full((80,), np.pi)
+
+# SPD Matrix
+A6 = np.array([[3, -1, 0],
+              [-1, 3, -1],
+              [0, -1, 3]], dtype=float)
+b6 = np.array([2, 1, 2], dtype=float)
