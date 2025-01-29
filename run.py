@@ -1,11 +1,20 @@
 import numpy as np
 
 from metodenumerice import data
+
+# Lab 1
 from metodenumerice.jacobi import jacobi
 from metodenumerice.jor import jor
 from metodenumerice.gs import gs
 from metodenumerice.gsb import gsb
 from metodenumerice.sor import sor
+
+# Lab 2
+from metodenumerice.sdm import sdm
+from metodenumerice.cgm import cgm
+from metodenumerice.pcgm import pcgm
+from metodenumerice.cgnr import cgnr
+from metodenumerice.cgne import cgne
 
 
 if __name__ == '__main__':
@@ -45,3 +54,30 @@ if __name__ == '__main__':
     d_sor = sor(data.A4, data.b4, x0, omega=1.5)
     print("Solution for d): ", d_sor)
     print("\n")
+
+    print("--Lab 2--")
+
+    print("==SDM==\n")
+    sol_sdm = sdm(data.A6, data.b6)
+    print("Solution for sdm: ", sol_sdm)
+    print("")
+
+    print("==CGM==\n")
+    sol_cgm = cgm(data.A6, data.b6)
+    print("Solution for cgm: ", sol_cgm)
+    print("")
+
+    print("==PCGM==\n")
+    sol_pcgm = pcgm(data.A6, data.b6)
+    print("Solution for pcgm: ", sol_pcgm)
+    print("")
+
+    print("==CGNR==\n")
+    sol_cgnr = cgnr(data.A6, data.b6)
+    print("Solution for cgnr: ", sol_cgnr)
+    print()
+
+    print("==CGNE==\n")
+    sol_cgne = cgne(data.A6, data.b6)
+    print("Solution for cgne: ", sol_cgne)
+    print()
