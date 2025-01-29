@@ -31,12 +31,12 @@ def sor(A, b, x0, omega, tol=1e-8, max_iter=1000, opt=0):
                 "Invalid OPT value. Use 0 (increment) or 1 (residual).")
 
         if error < tol:
-            print(f"SOR: Converged in {k+1} iterations.")
+            print(f"Converged in {k+1} iterations.")
             return x_new, k+1
 
         # Update x for the next iteration
         x = x_new
     else:
-        print("SOR: Max iterations reached without convergence.")
+        print("Max iterations reached without convergence.")
     return x, max_iter
 

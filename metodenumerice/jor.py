@@ -9,6 +9,7 @@ def jor(A, b, x0, omega, tol=1e-8, max_iter=1000, opt=0):
     x = x0.copy()
 
     for k in range(max_iter):
+
         x_new = omega * D_inv @ (b - L_U @ x) + (1 - omega) * x
 
         if opt == 0:
@@ -20,11 +21,11 @@ def jor(A, b, x0, omega, tol=1e-8, max_iter=1000, opt=0):
                 "Invalid OPT value. Use 0 (increment) or 1 (residual).")
 
         if error < tol:
-            print(f"JOR: Converged in {k+1} iterations.")
+            print(f"Converged in {k+1} iterations.")
             return x, k+1
 
         x = x_new.copy()
     else:
-        print("JOR: Didn't converge.")
+        print("Didn't converge.")
     return x
 
