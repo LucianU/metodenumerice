@@ -39,4 +39,4 @@ for i in range(78):
     if i <= 75:
         A5[i, i+4] = i/4
 
-b5 = np.full((1, 80), np.pi)
+b5 = np.full((80,), np.pi)
