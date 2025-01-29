@@ -1,22 +1,20 @@
-import numpy as np
-
 from .error import increment, residual
 
 
-def gsb(A, b, x0, tol=1e-6, max_iter=1000, opt=0):
+def gsb(A, b, x0, tol=1e-8, max_iter=1000, opt=0):
     n = len(b)
     x = x0.copy()
 
-    for iteration in range(max_iter):
+    for k in range(max_iter):
         x_new = x.copy()
 
         # Process rows from bottom to top
         for i in range(n-1, -1, -1):  # Reverse order
-            # Compute the sum for elements AFTER the diagonal (updated already in this iteration)
-            U_sum = A[i, i+1:] @ x_new[i+1:]
+            # Compute the sum for elements AFTER the diagonal
+            U_sum = A[i, i+1:] @ x[i+1:]
 
-            # Compute the sum for elements BEFORE the diagonal (old values)
-            L_sum = A[i, :i] @ x[:i]
+            # Compute the sum for elements BEFORE the diagonal
+            L_sum = A[i, :i] @ x_new[:i]
 
             # Update x_new[i]
             x_new[i] = (b[i] - U_sum - L_sum) / A[i, i]
