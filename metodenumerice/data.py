@@ -28,7 +28,7 @@ b4 = np.array([2, 1, 2])
 A5 = np.zeros([80, 80])
 
 for i in range(80):
-    A5[i, i] = 2*i
+    A5[i, i] = 2*(i+1)
     if i >= 2:
         A5[i, i-2] = i/2
     if i >= 4:
